@@ -1,8 +1,8 @@
 """
 ha level — breath support / aspiration burst.
 
-Reuses BreathQuest's Candle Gauntlet mechanic directly: one sharp, discrete
-puff per candle, must start and stop cleanly. Here the burst must show an
+Drives PhonemeQuest's own "Dragon's Breath" mechanic: a burst of "ha" fires
+a balloon burner, giving it a discrete lift. The burst must show an
 aspiration-like onset (fast rise, breathy/noisy rather than tonal) rather
 than accepting any sharp sound.
 

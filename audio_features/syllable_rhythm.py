@@ -1,9 +1,9 @@
 """
 ma level — syllable repetition / rhythm (diadochokinetic rate).
 
-Reuses BreathQuest's Dandelion Storm mechanic: quick timed puffs, scored on
-accuracy of timing. Here "puff" = detected syllable onset, and accuracy is
-scored against a target beat rather than just puff presence.
+Drives PhonemeQuest's own "Drum Island" mechanic: each clear "ma" hits a
+drum in sync with a target beat, scored on timing accuracy rather than just
+presence.
 
 Call this on a rolling buffer (~2-3s) rather than a single short frame —
 onset detection needs enough audio to find repeated events.

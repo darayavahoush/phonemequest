@@ -32,31 +32,36 @@ agent/            baseline agents (rule-based, contextual bandit) + gymnasium en
 tests/            sanity tests against synthetic audio
 ```
 
-## Integration guide (for whoever merges this into BreathQuest)
+## Relationship to BreathQuest
 
-**Level -> extractor -> BreathQuest engine it reuses:**
+PhonemeQuest and BreathQuest are **two separate games**, each with their own levels and
+mechanics, that will live on **one shared site** — same auth, same database, same
+deployment. They don't reuse each other's game engines or visuals.
 
-| Level | Extractor | Reuses BreathQuest engine | What changes |
-|---|---|---|---|
-| aa | `audio_features/vowel_loudness.py` | Float Rider | swap generic amplitude for vowel-loudness scoring |
-| oo | `audio_features/vowel_quality.py` | Balloon Pop | swap "any breath fills balloon" for formant + duration scoring |
-| ma | `audio_features/syllable_rhythm.py` | Dandelion Storm | swap generic puff detection for syllable-onset rhythm scoring |
-| fa | `audio_features/frication.py` | Dragon Fire | swap generic sustained blow for fricative noise-energy scoring |
-| ha | `audio_features/aspiration_burst.py` | Candle Gauntlet | swap generic sharp puff for aspiration-burst scoring |
-| word | `word_level/asr_match.py` | — none, net new | needs faster-whisper wired in |
-| *(shared)* | — | Pinwheel | stays as-is, shared mic-calibration/warmup for the whole platform |
+**PhonemeQuest's own levels:**
+
+| Level | Extractor | Mechanic |
+|---|---|---|
+| aa | `audio_features/vowel_loudness.py` | Rocket Launch — sustained loud "aaa" powers a rocket up |
+| oo | `audio_features/vowel_quality.py` | Submarine Dive — held, rounded "oo" dives deeper |
+| ma | `audio_features/syllable_rhythm.py` | Drum Island — each clear "ma" hits a drum on the beat |
+| fa | `audio_features/frication.py` | Kite Flyer — continuous "ffff" keeps a kite aloft |
+| ha | `audio_features/aspiration_burst.py` | Dragon's Breath — a "ha" burst fires a balloon burner |
+| word | `word_level/asr_match.py` | Village Builder — correct pronunciation places a building piece |
 
 **Every extractor returns the same `FeatureResult` shape** (`audio_features/common.py`):
-`score` (0-1, drives the on-screen mechanic directly, same as BreathQuest's live breath-bar
-value), `is_valid_attempt`, `raw_features` (diagnostics for the DRL agent + therapist dashboard).
-This mirrors BreathQuest's `AudioEngine` breath-value convention on purpose — integrating a
-level should mean swapping the value that feeds the existing mechanic, not rewriting the
-mechanic.
+`score` (0-1, drives the on-screen mechanic directly), `is_valid_attempt`, `raw_features`
+(diagnostics for the DRL agent + therapist dashboard) — a shared contract within
+PhonemeQuest itself, independent of BreathQuest.
+
+## Integration guide (for whoever merges this into the shared site)
 
 **`schemas/session_event.py`** defines the exact shape PhonemeQuest needs written into
-BreathQuest's `session_events` table (`skill_type: "phoneme"`, plus a `PhonemePayload`).
-Do not create a second events table — add the `skill_type` field to the existing schema
-and store `PhonemePayload` as a JSON/JSONB column alongside it.
+the shared `session_events` table (`skill_type: "phoneme"`, plus a `PhonemePayload`),
+alongside BreathQuest's own rows (`skill_type: "breath"`). Do not create a second events
+table — add the `skill_type` field to the existing schema and store `PhonemePayload` as
+a JSON/JSONB column alongside it. Same pattern for auth/patients/sessions — one shared
+identity and session model across both games, not two.
 
 **Not yet built, by design** — these need the merged database/DRL agent to make sense of,
 so building them standalone now would mean redoing them:

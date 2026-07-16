@@ -1,11 +1,9 @@
 """
 Shared contract for all phoneme feature extractors.
 
-Mirrors BreathQuest's AudioEngine breath-value convention on purpose: that engine
-returns a single normalized 0-1 value per audio frame that drives the game's
-visual feedback (kite height, rocket thrust, etc). Every extractor here returns
-the same shape, so integrating into BreathQuest's game loop is a drop-in swap of
-"generic breath value" -> "phoneme-specific score" rather than a rewrite.
+Every extractor returns the same shape regardless of the underlying signal
+processing, so the game-loop code that consumes it (whatever drives the
+Rocket/Submarine/Kite/etc. visuals) doesn't need level-specific branching.
 """
 
 from dataclasses import dataclass, field
@@ -15,7 +13,7 @@ from dataclasses import dataclass, field
 class FeatureResult:
     """
     score: 0.0-1.0 normalized value that drives the on-screen mechanic directly
-           (equivalent to BreathQuest's live breath-bar value).
+           (rocket height, submarine depth, kite altitude, etc, depending on level).
     is_valid_attempt: whether this frame counts as a genuine attempt at the
            target sound at all (helps the game distinguish silence/noise from
            an actual attempt that just scored low).

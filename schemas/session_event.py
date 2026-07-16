@@ -1,17 +1,17 @@
 """
 Session event schema contract.
 
-This is the single interface contract for merging PhonemeQuest into
-BreathQuest's database. BreathQuest already has:
+PhonemeQuest and BreathQuest are two separate games sharing one site — same
+auth, same database, same deployment — not the same level mechanics. This is
+the interface contract for that shared backend: BreathQuest already has
 
     patients -> sessions -> session_events
 
 This model represents one row that PhonemeQuest would write to that same
-session_events table. To integrate: add a `skill_type` column
-('breath' | 'phoneme') to the existing table if not already generic enough,
-and store `phoneme_payload` as a JSON/JSONB column alongside whatever
-columns the existing breath events already use — do not create a second
-events table.
+session_events table, alongside BreathQuest's own rows. To integrate: add a
+`skill_type` column ('breath' | 'phoneme') to the existing table if not
+already generic enough, and store `phoneme_payload` as a JSON/JSONB column —
+do not create a second events table just because it's a different game.
 
 Field names here deliberately avoid assuming BreathQuest's exact existing
 column names (that repo wasn't available to check against directly) — when

@@ -1,9 +1,9 @@
 """
 oo level — vowel duration + lip rounding, via formant tracking.
 
-Reuses BreathQuest's Balloon Pop mechanic: fill toward a target zone and hold.
-Here the fill rate is driven by how close F1/F2 are to a rounded-"oo" target,
-combined with how long that quality has been sustained.
+Drives PhonemeQuest's own "Submarine Dive" mechanic: a held, rounded "oo"
+makes a submarine dive deeper; losing rounding or duration lets it float
+back up.
 
 Needs a slightly larger audio window than the other extractors (formant
 tracking wants ~200-500ms of stable voicing to be reliable) — buffer frames

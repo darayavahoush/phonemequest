@@ -1,9 +1,11 @@
 """
 aa level — vowel loudness / voice projection.
 
-Reuses BreathQuest's Float Rider mechanic: keeps something afloat while the
-score is above a threshold. Here the score is driven by sustained vowel
-loudness rather than generic breath amplitude.
+Drives PhonemeQuest's own "Rocket Launch" mechanic: sustained loud "aaa"
+powers a rocket upward; quiet or inconsistent volume lets it fall back down.
+This is a PhonemeQuest-specific level, distinct from BreathQuest's levels —
+the two are separate games sharing only the underlying site (auth, DB,
+deployment), not mechanics.
 """
 
 import numpy as np

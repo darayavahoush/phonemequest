@@ -1,8 +1,8 @@
 """
 fa level — sustained frication / airflow control.
 
-Reuses BreathQuest's Dragon Fire mechanic directly: longer sustained blow =
-further reach. Here "blow" must specifically carry a fricative noise
+Drives PhonemeQuest's own "Kite Flyer" mechanic: continuous "ffff" keeps a
+kite aloft; stopping drops it. The score requires an actual fricative noise
 signature (high spectral centroid, broadband high-frequency energy) rather
 than just any amplitude, so a generic exhale doesn't score the same as an
 actual sustained "f".
