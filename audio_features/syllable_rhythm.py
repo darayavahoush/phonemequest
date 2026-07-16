@@ -1,7 +1,7 @@
 """
 ma level — syllable repetition / rhythm (diadochokinetic rate).
 
-Drives PhonemeQuest's own "Drum Island" mechanic: each clear "ma" hits a
+Drives Chime's own "Drum Island" mechanic: each clear "ma" hits a
 drum in sync with a target beat, scored on timing accuracy rather than just
 presence.
 

@@ -1,18 +1,18 @@
 """
-Phoneme-specific audio feature extractors for PhonemeQuest.
+Phoneme-specific audio feature extractors for Chime.
 
 Each module exposes a single extract(audio_chunk, sample_rate) -> FeatureResult
 function. See common.py for the shared FeatureResult contract.
 
-PhonemeQuest is a separate game from BreathQuest, with its own mechanics —
+Chime is a separate game from BreathQuest, with its own mechanics —
 they share the site (auth, DB, deployment) but not level designs.
 
 Level -> extractor -> mechanic:
   aa   -> vowel_loudness   -> Rocket Launch
   oo   -> vowel_quality    -> Submarine Dive
   ma   -> syllable_rhythm  -> Drum Island
-  fa   -> frication        -> Kite Flyer
-  ha   -> aspiration_burst -> Dragon's Breath
+  fa   -> frication        -> Wind Chime Garden
+  ha   -> aspiration_burst -> Bubble Wrap Pop
   word -> word_level/asr_match.py -> Village Builder
 """
 

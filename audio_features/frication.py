@@ -1,11 +1,12 @@
 """
 fa level — sustained frication / airflow control.
 
-Drives PhonemeQuest's own "Kite Flyer" mechanic: continuous "ffff" keeps a
-kite aloft; stopping drops it. The score requires an actual fricative noise
-signature (high spectral centroid, broadband high-frequency energy) rather
-than just any amplitude, so a generic exhale doesn't score the same as an
-actual sustained "f".
+Drives Chime's own "Wind Chime Garden" mechanic: continuous "ffff" spins a
+garden of wind chimes; each full spin rings a note, building a little tune
+the longer you hold it. Stopping lets the chimes slow and go quiet. The
+score requires an actual fricative noise signature (high spectral centroid,
+broadband high-frequency energy) rather than just any amplitude, so a
+generic exhale doesn't score the same as an actual sustained "f".
 """
 
 import numpy as np

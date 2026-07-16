@@ -1,4 +1,4 @@
-# PhonemeQuest
+# Chime
 
 Speech-sound practice game module for VaakSiddhi, designed to merge into **BreathQuest**
 as a second "world" once both are ready. This repo is deliberately structured so that
@@ -34,29 +34,29 @@ tests/            sanity tests against synthetic audio
 
 ## Relationship to BreathQuest
 
-PhonemeQuest and BreathQuest are **two separate games**, each with their own levels and
+Chime and BreathQuest are **two separate games**, each with their own levels and
 mechanics, that will live on **one shared site** — same auth, same database, same
 deployment. They don't reuse each other's game engines or visuals.
 
-**PhonemeQuest's own levels:**
+**Chime's own levels:**
 
 | Level | Extractor | Mechanic |
 |---|---|---|
 | aa | `audio_features/vowel_loudness.py` | Rocket Launch — sustained loud "aaa" powers a rocket up |
 | oo | `audio_features/vowel_quality.py` | Submarine Dive — held, rounded "oo" dives deeper |
 | ma | `audio_features/syllable_rhythm.py` | Drum Island — each clear "ma" hits a drum on the beat |
-| fa | `audio_features/frication.py` | Kite Flyer — continuous "ffff" keeps a kite aloft |
-| ha | `audio_features/aspiration_burst.py` | Dragon's Breath — a "ha" burst fires a balloon burner |
+| fa | `audio_features/frication.py` | Wind Chime Garden — continuous "ffff" spins a garden of chimes, ringing notes |
+| ha | `audio_features/aspiration_burst.py` | Bubble Wrap Pop — a "ha" burst pops a bubble on a filling sheet |
 | word | `word_level/asr_match.py` | Village Builder — correct pronunciation places a building piece |
 
 **Every extractor returns the same `FeatureResult` shape** (`audio_features/common.py`):
 `score` (0-1, drives the on-screen mechanic directly), `is_valid_attempt`, `raw_features`
 (diagnostics for the DRL agent + therapist dashboard) — a shared contract within
-PhonemeQuest itself, independent of BreathQuest.
+Chime itself, independent of BreathQuest.
 
 ## Integration guide (for whoever merges this into the shared site)
 
-**`schemas/session_event.py`** defines the exact shape PhonemeQuest needs written into
+**`schemas/session_event.py`** defines the exact shape Chime needs written into
 the shared `session_events` table (`skill_type: "phoneme"`, plus a `PhonemePayload`),
 alongside BreathQuest's own rows (`skill_type: "breath"`). Do not create a second events
 table — add the `skill_type` field to the existing schema and store `PhonemePayload` as

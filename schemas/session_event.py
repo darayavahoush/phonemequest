@@ -1,13 +1,13 @@
 """
 Session event schema contract.
 
-PhonemeQuest and BreathQuest are two separate games sharing one site — same
+Chime and BreathQuest are two separate games sharing one site — same
 auth, same database, same deployment — not the same level mechanics. This is
 the interface contract for that shared backend: BreathQuest already has
 
     patients -> sessions -> session_events
 
-This model represents one row that PhonemeQuest would write to that same
+This model represents one row that Chime would write to that same
 session_events table, alongside BreathQuest's own rows. To integrate: add a
 `skill_type` column ('breath' | 'phoneme') to the existing table if not
 already generic enough, and store `phoneme_payload` as a JSON/JSONB column —

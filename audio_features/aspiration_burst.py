@@ -1,10 +1,11 @@
 """
 ha level — breath support / aspiration burst.
 
-Drives PhonemeQuest's own "Dragon's Breath" mechanic: a burst of "ha" fires
-a balloon burner, giving it a discrete lift. The burst must show an
-aspiration-like onset (fast rise, breathy/noisy rather than tonal) rather
-than accepting any sharp sound.
+Drives Chime's own "Bubble Wrap Pop" mechanic: each clean "ha" burst pops
+one bubble on a sheet of bubble wrap, with a satisfying pop animation. The
+sheet fills up over the session. The burst must show an aspiration-like
+onset (fast rise, breathy/noisy rather than tonal) rather than accepting
+any sharp sound.
 
 Unlike the other extractors, this one is event-based: call it once per
 detected onset (from a lightweight energy-based onset trigger upstream),

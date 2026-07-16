@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "phonemequest"
+name = "chime"
 version = "0.1.0"
 description = "Speech-sound practice game module for VaakSiddhi, designed to merge into BreathQuest"
 requires-python = ">=3.10"

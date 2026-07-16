@@ -1,7 +1,7 @@
 """
 oo level — vowel duration + lip rounding, via formant tracking.
 
-Drives PhonemeQuest's own "Submarine Dive" mechanic: a held, rounded "oo"
+Drives Chime's own "Submarine Dive" mechanic: a held, rounded "oo"
 makes a submarine dive deeper; losing rounding or duration lets it float
 back up.
 

@@ -1,9 +1,9 @@
 """
 aa level — vowel loudness / voice projection.
 
-Drives PhonemeQuest's own "Rocket Launch" mechanic: sustained loud "aaa"
+Drives Chime's own "Rocket Launch" mechanic: sustained loud "aaa"
 powers a rocket upward; quiet or inconsistent volume lets it fall back down.
-This is a PhonemeQuest-specific level, distinct from BreathQuest's levels —
+This is a Chime-specific level, distinct from BreathQuest's levels —
 the two are separate games sharing only the underlying site (auth, DB,
 deployment), not mechanics.
 """
