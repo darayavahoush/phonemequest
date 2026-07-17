@@ -20,9 +20,10 @@ WINDOW = 5
 
 
 class DifficultyEnv(gym.Env):
-    def __init__(self, episode_length: int = 50):
+    def __init__(self, episode_length: int = 50, calibrated_ranges=None):
         super().__init__()
         self.episode_length = episode_length
+        self.calibrated_ranges = calibrated_ranges  # None = original hand-picked defaults
         # state: [recent success rate, current difficulty, frustration proxy]
         self.observation_space = spaces.Box(low=0.0, high=1.0, shape=(3,), dtype=np.float32)
         # actions: lower difficulty, hold, raise difficulty
@@ -34,7 +35,7 @@ class DifficultyEnv(gym.Env):
 
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
-        self.child = make_random_child()
+        self.child = make_random_child(self.calibrated_ranges)
         self.difficulty = 0.5
         self.recent = []
         self.step_count = 0

@@ -3,3 +3,4 @@
 # download) — no need to install this until you're ready to train the agent.
 gymnasium
 stable-baselines3
+sb3-contrib

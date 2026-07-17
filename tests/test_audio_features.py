@@ -10,7 +10,7 @@ import pytest
 
 from audio_features import vowel_loudness, vowel_quality, syllable_rhythm, frication, aspiration_burst
 from agent.env import DifficultyEnv
-from agent.baselines import RuleBasedAgent, EpsilonGreedyBanditAgent
+from agent.baselines import RuleBasedAgent, EpsilonGreedyBanditAgent, TabularQAgent
 
 SR = 16000
 
@@ -107,6 +107,20 @@ class TestBaselineAgents:
             obs, reward, terminated, truncated, _ = env.step(action)
             agent.update(obs, action, reward)
             if terminated or truncated:
+                break
+        assert len(agent.q_table) > 0
+
+    def test_tabular_q_updates_with_bellman_target(self):
+        env = DifficultyEnv(episode_length=20)
+        agent = TabularQAgent()
+        obs, _ = env.reset()
+        for _ in range(20):
+            action = agent.act(obs)
+            next_obs, reward, terminated, truncated, _ = env.step(action)
+            done = terminated or truncated
+            agent.update(obs, action, reward, next_obs, done)
+            obs = next_obs
+            if done:
                 break
         assert len(agent.q_table) > 0
 

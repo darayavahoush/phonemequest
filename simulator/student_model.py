@@ -41,8 +41,23 @@ class SimulatedChild:
         return record
 
 
-def make_random_child() -> SimulatedChild:
-    """Sample a child with varied ability/frustration profile, for training diversity."""
+def make_random_child(ranges=None) -> SimulatedChild:
+    """
+    Sample a child with varied ability/frustration profile, for training diversity.
+
+    ranges: optional CalibratedRanges (see retraining/simulator_calibration.py).
+    When provided, sampling bounds come from real session data instead of the
+    original hand-picked guesses below. Defaults preserved for backward
+    compatibility with existing training scripts.
+    """
+    if ranges is not None:
+        return SimulatedChild(
+            skill_level=random.uniform(ranges.skill_level_min, ranges.skill_level_max),
+            learning_rate=random.uniform(ranges.learning_rate_min, ranges.learning_rate_max),
+            frustration_sensitivity=random.uniform(
+                ranges.frustration_sensitivity_min, ranges.frustration_sensitivity_max
+            ),
+        )
     return SimulatedChild(
         skill_level=random.uniform(0.2, 0.6),
         learning_rate=random.uniform(0.01, 0.04),

@@ -1,5 +1,5 @@
 const assert = require('assert');
-const { computeRMS, computeLoudnessScore, updateAltitude } = require('./rocket_logic.js');
+const { computeRMS, computeLoudnessScore, updateAltitude, detectPitch, pitchToBoost } = require('./rocket_logic.js');
 
 // --- computeRMS ---
 assert.strictEqual(computeRMS([0, 0, 0, 0]), 0, 'silence should give RMS 0');
@@ -37,3 +37,41 @@ const afterQuiet = updateAltitude(0.5, 0.0, 0.1, config);
 assert.ok(afterQuiet < 0.5, 'one quiet step should lower altitude');
 
 console.log('All rocket_logic tests passed.');
+
+// --- detectPitch ---
+const SR = 16000;
+function sineAt(freq, durationS, amplitude = 0.4) {
+  const n = Math.floor(SR * durationS);
+  const out = new Array(n);
+  for (let i = 0; i < n; i++) out[i] = amplitude * Math.sin((i / SR) * 2 * Math.PI * freq);
+  return out;
+}
+
+const pitch220 = detectPitch(sineAt(220, 0.05), SR);
+assert.ok(Math.abs(pitch220.frequency - 220) < 5, `expected ~220Hz, got ${pitch220.frequency}`);
+assert.ok(pitch220.confidence > 0.9, `expected high confidence for clean tone, got ${pitch220.confidence}`);
+
+const pitch440 = detectPitch(sineAt(440, 0.05), SR);
+assert.ok(Math.abs(pitch440.frequency - 440) < 8, `expected ~440Hz, got ${pitch440.frequency}`);
+
+const silentPitch = detectPitch(new Array(800).fill(0), SR);
+assert.strictEqual(silentPitch.confidence, 0, 'silence should give zero pitch confidence');
+
+// noisy/random signal shouldn't produce a confident pitch reading
+const noise = Array.from({ length: 800 }, () => (Math.random() - 0.5) * 0.3);
+const noisyPitch = detectPitch(noise, SR);
+assert.ok(noisyPitch.confidence < 0.85, `random noise shouldn't be high-confidence pitch, got ${noisyPitch.confidence}`);
+
+// --- pitchToBoost ---
+assert.strictEqual(pitchToBoost({ frequency: 220, confidence: 0.95 }, 220, 500), 0, 'at boostMinHz should give 0 boost');
+assert.strictEqual(pitchToBoost({ frequency: 500, confidence: 0.95 }, 220, 500), 1, 'at boostMaxHz should give full boost');
+assert.strictEqual(pitchToBoost({ frequency: 400, confidence: 0.5 }, 220, 500), 0, 'low confidence should give zero boost regardless of frequency');
+assert.strictEqual(pitchToBoost({ frequency: 0, confidence: 0 }, 220, 500), 0, 'no detected pitch should give zero boost');
+
+// --- updateAltitude with pitch boost ---
+const configPB = { riseRate: 0.5, fallRate: 0.2, scoreThreshold: 0.4 };
+const noBoostAlt = updateAltitude(0.3, 0.9, 0.1, configPB, 0);
+const fullBoostAlt = updateAltitude(0.3, 0.9, 0.1, configPB, 1);
+assert.ok(fullBoostAlt > noBoostAlt, 'full pitch boost should climb faster than no boost at same loudness');
+
+console.log('All pitch detection tests passed.');
